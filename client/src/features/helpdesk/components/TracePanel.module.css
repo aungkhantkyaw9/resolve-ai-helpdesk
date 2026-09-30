@@ -1,0 +1,102 @@
+.pane {
+    border-left: 1px solid var(--line);
+    background: var(--panel);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.head {
+    padding: 16px 18px 10px;
+    border-bottom: 1px solid var(--line);
+}
+
+.title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.sub {
+    font-size: 0.75rem;
+    color: var(--slate);
+    margin-top: 2px;
+}
+
+.steps {
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+}
+
+.step {
+    position: relative;
+    padding-left: 22px;
+    padding-bottom: 22px;
+}
+
+.step:last-child {
+    padding-bottom: 0;
+}
+
+.step::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 4px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--panel);
+    border: 2px solid var(--slate-soft);
+}
+
+.step::after {
+    content: '';
+    position: absolute;
+    left: 9px;
+    top: 14px;
+    bottom: 0;
+    width: 1px;
+    background: var(--line);
+}
+
+.step:last-child::after {
+    display: none;
+}
+
+.step.done::before {
+    border-color: var(--teal);
+    background: var(--teal);
+}
+
+.label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--slate-soft);
+    margin-bottom: 3px;
+}
+
+.content {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    line-height: 1.5;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 8px 10px;
+}
+
+.content.result {
+    color: var(--teal);
+}
+
+.footnote {
+    padding: 16px 20px 24px;
+    font-size: 0.72rem;
+    color: var(--slate-soft);
+    border-top: 1px solid var(--line);
+}

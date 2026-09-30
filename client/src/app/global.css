@@ -1,0 +1,21 @@
+:root {
+    --paper: #F1F3F2;
+    --panel: #FFFFFF;
+    --ink: #1B2422;
+    --slate: #5B6664;
+    --slate-soft: #8B958F;
+    --line: #DCE1DE;
+    --amber: #E8A33D;
+    --amber-soft: #FBEBD2;
+    --teal: #2F7A5C;
+    --teal-soft: #DFEEE7;
+    --radius: 10px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body, #root { height: 100%; }
+body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', sans-serif;
+}

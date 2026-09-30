@@ -1,0 +1,128 @@
+.pane {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    height: 100%;
+}
+
+.head {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--panel);
+}
+
+.name {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.sub {
+    font-size: 0.78rem;
+    color: var(--slate);
+}
+
+.status {
+    margin-left: auto;
+    font-size: 0.72rem;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--teal-soft);
+    color: var(--teal);
+    font-weight: 500;
+}
+
+.messages {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    overflow-y: auto;
+}
+
+.msg {
+    max-width: min(72%, 520px);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.msg.customer {
+    align-self: flex-start;
+}
+
+.msg.agent {
+    align-self: flex-end;
+}
+
+.bubble {
+    padding: 10px 14px;
+    border-radius: var(--radius);
+    font-size: 0.9rem;
+    line-height: 1.45;
+}
+
+.msg.customer .bubble {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-bottom-left-radius: 3px;
+}
+
+.msg.agent .bubble {
+    background: var(--ink);
+    color: var(--paper);
+    border-bottom-right-radius: 3px;
+}
+
+.meta {
+    font-size: 0.7rem;
+    color: var(--slate-soft);
+    padding: 0 4px;
+}
+
+.msg.agent .meta {
+    text-align: right;
+}
+
+.tag {
+    font-size: 0.68rem;
+    font-weight: 500;
+    color: var(--amber);
+    margin-bottom: 2px;
+    text-align: right;
+}
+
+.composer {
+    padding: 14px 20px;
+    border-top: 1px solid var(--line);
+    background: var(--panel);
+    display: flex;
+    gap: 10px;
+}
+
+.composer input {
+    flex: 1;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    font-size: 0.88rem;
+    font-family: inherit;
+    background: var(--paper);
+    color: var(--ink);
+}
+
+.composer button {
+    border: none;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0 18px;
+    border-radius: var(--radius);
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
