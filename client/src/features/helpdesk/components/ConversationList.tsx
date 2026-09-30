@@ -1,23 +1,11 @@
 import styles from './ConversationList.module.css'
-
-const conversations = [
-    {
-        id: 1,
-        name: 'Ploy S.',
-        channel: 'whatsapp',
-        preview: 'Where\'s my order? It\'s been 5 days...',
-        time: '2m',
-        active: true
-    },
-    {id: 2, name: 'Napat K.', channel: 'shopee', preview: 'Can I get a refund for this?', time: '14m', active: false},
-    {id: 3, name: 'Aom_shops', channel: 'ig', preview: 'Do you have this in size M?', time: '1h', active: false}
-]
+import {mockConversations} from '../mockData'
 
 export function ConversationList() {
     return (
         <div className={styles.pane}>
-            <div className={styles.head}>Inbox · {conversations.length} open</div>
-            {conversations.map((c) => (
+            <div className={styles.head}>Inbox · {mockConversations.length} open</div>
+            {mockConversations.map((c) => (
                 <div key={c.id} className={`${styles.item} ${c.active ? styles.active : ''}`}>
                     <span className={`${styles.dot} ${styles[`ch-${c.channel}`]}`}/>
                     <div className={styles.body}>
