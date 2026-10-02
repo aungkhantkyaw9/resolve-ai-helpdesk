@@ -1,7 +1,11 @@
 import styles from './TracePanel.module.css';
-import { mockTraceSteps } from '../mockData';
+import type { TraceStep } from '../../../shared/types/trace';
 
-export function TracePanel() {
+interface TracePanelProps {
+    steps: TraceStep[];
+}
+
+export function TracePanel({ steps }: TracePanelProps) {
     return (
         <div className={styles.pane}>
             <div className={styles.head}>
@@ -10,14 +14,18 @@ export function TracePanel() {
             </div>
 
             <div className={styles.steps}>
-                {mockTraceSteps.map((s) => (
-                    <div key={s.id} className={`${styles.step} ${s.done ? styles.done : ''}`}>
-                        <div className={styles.label}>{s.icon} {s.label}</div>
-                        <div className={`${styles.content} ${s.result ? styles.result : ''}`}>
-                            {s.content.split('\n').map((line, i) => <div key={i}>{line}</div>)}
+                {steps.length === 0 ? (
+                    <div className={styles.empty}>Send a message to see the agent's reasoning here.</div>
+                ) : (
+                    steps.map((s) => (
+                        <div key={s.id} className={`${styles.step} ${s.done ? styles.done : ''}`}>
+                            <div className={styles.label}>{s.icon} {s.label}</div>
+                            <div className={`${styles.content} ${s.result ? styles.result : ''}`}>
+                                {s.content.split('\n').map((line, i) => <div key={i}>{line}</div>)}
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))
+                )}
             </div>
 
             <div className={styles.footnote}>

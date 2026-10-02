@@ -1,14 +1,19 @@
 import { useState } from 'react';
 import styles from './ChatThread.module.css';
-import { mockMessages } from '../mockData';
-import { useSendMessage } from '../hooks/useSendMessage';
+import type { Message } from '../../../shared/types/message';
 
-export function ChatThread() {
-    const { messages, sending, error, send } = useSendMessage(mockMessages);
+interface ChatThreadProps {
+    messages: Message[];
+    sending: boolean;
+    error: string | null;
+    onSend: (text: string) => void;
+}
+
+export function ChatThread({ messages, sending, error, onSend }: ChatThreadProps) {
     const [input, setInput] = useState('');
 
     function handleSend() {
-        send(input);
+        onSend(input);
         setInput('');
     }
 

@@ -100,3 +100,5 @@
     color: var(--slate-soft);
     border-top: 1px solid var(--line);
 }
+
+.empty { padding: 16px 18px; font-size: 0.82rem; color: var(--slate-soft); }

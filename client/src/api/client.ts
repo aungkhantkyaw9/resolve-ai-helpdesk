@@ -1,5 +1,6 @@
 export interface StreamCallbacks {
     onToken: (text: string) => void;
+    onTrace: (data: { type: 'tool_call' | 'tool_result'; name: string; arguments?: unknown; result?: unknown }) => void;
     onDone: (interactionId?: string) => void;
     onError: (message: string) => void;
 }
@@ -47,6 +48,7 @@ export async function sendMessage(
             if (eventType === 'token') callbacks.onToken(data.text);
             if (eventType === 'done') callbacks.onDone(data.interactionId);
             if (eventType === 'error') callbacks.onError(data.message);
+            if (eventType === 'trace') callbacks.onTrace(data);
         }
     }
 }
