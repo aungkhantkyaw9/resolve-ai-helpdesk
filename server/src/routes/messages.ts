@@ -4,11 +4,6 @@ import type { GoogleGenAI } from '@google/genai';
 import { toolDefinitions } from '../tools/definitions.js';
 import { executeTool } from '../tools/execute.js';
 
-const messageRequestSchema = z.object({
-    message: z.string().min(1).max(2000),
-    previousInteractionId: z.string().optional(),
-});
-
 export function createMessagesRouter(ai: GoogleGenAI) {
     const router = Router();
 
