@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styles from './ChatThread.module.css';
 import type { Message } from '../../../shared/types/message';
+import { formatText } from '../../../shared/utils/formatText';
 
 interface ChatThreadProps {
     messages: Message[];
@@ -31,7 +32,7 @@ export function ChatThread({ messages, sending, error, onSend }: ChatThreadProps
                 {messages.map((m) => (
                     <div key={m.id} className={`${styles.msg} ${styles[m.from]}`}>
                         {m.from === 'agent' && <div className={styles.tag}>AI Agent</div>}
-                        <div className={styles.bubble}>{m.text || '···'}</div>
+                        <div className={styles.bubble}>{m.text ? formatText(m.text) : '···'}</div>
                         <div className={styles.meta}>{m.time}</div>
                     </div>
                 ))}
