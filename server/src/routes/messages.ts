@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import { z } from 'zod';
 import type { GoogleGenAI } from '@google/genai';
+import { toolDefinitions } from '../tools/definitions.js';
+import { executeTool } from '../tools/execute.js';
 
 const messageRequestSchema = z.object({
     message: z.string().min(1).max(2000),
@@ -23,7 +25,6 @@ export function createMessagesRouter(ai: GoogleGenAI) {
 
         const { message, previousInteractionId } = parsed.data;
 
-        // SSE headers
         res.setHeader('Content-Type', 'text/event-stream');
         res.setHeader('Cache-Control', 'no-cache');
         res.setHeader('Connection', 'keep-alive');
@@ -34,29 +35,63 @@ export function createMessagesRouter(ai: GoogleGenAI) {
         };
 
         try {
-            const stream = await ai.interactions.create({
+            // Step 1: initial call, tools enabled, non-streaming (so we can inspect steps)
+            let interaction = await ai.interactions.create({
                 model: 'gemini-3.8-flash',
                 input: message,
                 previous_interaction_id: previousInteractionId,
-                stream: true,
+                tools: toolDefinitions as any,
             });
 
-            let interactionId: string | undefined;
+            // Step 2: loop while the model keeps requesting tool calls
+            let toolCallStep: any = interaction.steps.find((s: any) => s.type === 'function_call');
 
-            for await (const event of stream) {
-                if (event.event_type === 'interaction.created') {
-                    interactionId = event.interaction?.id;
-                }
+            while (toolCallStep) {
+                send('trace', {
+                    type: 'tool_call',
+                    name: toolCallStep.name,
+                    arguments: toolCallStep.arguments,
+                });
 
-                if (event.event_type === 'step.delta' && event.delta?.type === 'text') {
-                    send('token', { text: event.delta.text });
-                }
+                const result = executeTool(toolCallStep.name, toolCallStep.arguments);
+
+                send('trace', {
+                    type: 'tool_result',
+                    name: toolCallStep.name,
+                    result,
+                });
+
+                interaction = await ai.interactions.create({
+                    model: 'gemini-3.8-flash',
+                    input: [
+                        {
+                            type: 'function_result',
+                            name: toolCallStep.name,
+                            call_id: toolCallStep.id,
+                            result: [{ type: 'text', text: JSON.stringify(result) }],
+                        },
+                    ],
+                    tools: toolDefinitions as any,
+                    previous_interaction_id: interaction.id,
+                });
+
+                toolCallStep = interaction.steps.find((s: any) => s.type === 'function_call');
             }
 
-            send('done', { interactionId });
+            // Step 3: no more tool calls — stream the final text to the client in chunks
+            const finalText = interaction.output_text ?? '';
+            const words = finalText.split(' ');
+
+            for (let i = 0; i < words.length; i += 3) {
+                const chunk = words.slice(i, i + 3).join(' ') + ' ';
+                send('token', { text: chunk });
+                await new Promise((resolve) => setTimeout(resolve, 40)); // small delay for a readable typing effect
+            }
+
+            send('done', { interactionId: interaction.id });
             res.end();
         } catch (error) {
-            console.error('Streaming failed:', error);
+            console.error('[messages] Streaming failed:', error);
             send('error', { message: 'Something went wrong generating a response' });
             res.end();
         }

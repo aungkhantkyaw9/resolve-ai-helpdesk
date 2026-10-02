@@ -1,0 +1,26 @@
+{
+  "TH-88213": {
+    "orderId": "TH-88213",
+    "status": "out_for_delivery",
+    "shippedDate": "2026-09-18",
+    "eta": "2026-09-22T18:00:00",
+    "trackingNumber": "TH88213SF",
+    "items": ["Wireless Earbuds - Black"]
+  },
+  "TH-90021": {
+    "orderId": "TH-90021",
+    "status": "delivered",
+    "shippedDate": "2026-09-15",
+    "eta": "2026-09-17T14:00:00",
+    "trackingNumber": "TH90021SF",
+    "items": ["Phone Case - Clear"]
+  },
+  "TH-91500": {
+    "orderId": "TH-91500",
+    "status": "processing",
+    "shippedDate": null,
+    "eta": null,
+    "trackingNumber": null,
+    "items": ["Bluetooth Speaker - Blue"]
+  }
+}
