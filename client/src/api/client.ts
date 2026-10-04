@@ -1,6 +1,12 @@
 export interface StreamCallbacks {
     onToken: (text: string) => void;
-    onTrace: (data: { type: 'tool_call' | 'tool_result'; name: string; arguments?: unknown; result?: unknown }) => void;
+    onTrace: (data: {
+        type: 'tool_call' | 'tool_result' | 'policy_retrieved';
+        name?: string;
+        arguments?: unknown;
+        result?: unknown;
+        doc?: string;
+    }) => void;
     onDone: (interactionId?: string) => void;
     onError: (message: string) => void;
 }

@@ -3,6 +3,7 @@ import { z } from 'zod';
 import type { GoogleGenAI } from '@google/genai';
 import { toolDefinitions } from '../tools/definitions.js';
 import { executeTool } from '../tools/execute.js';
+import { retrievePolicy } from '../retrieval/retrieve.js';
 
 export function createMessagesRouter(ai: GoogleGenAI) {
     const router = Router();
@@ -30,13 +31,22 @@ export function createMessagesRouter(ai: GoogleGenAI) {
         };
 
         try {
-            // Step 1: initial call, tools enabled, non-streaming (so we can inspect steps)
+            const policy = retrievePolicy(message);
+            const systemInstruction = policy
+                ? `You are a merchant support agent. Follow this policy document when relevant:\n\n${policy.content}`
+                : 'You are a helpful merchant support agent.';
+
+            if (policy) {
+                send('trace', { type: 'policy_retrieved', doc: policy.title });
+            }
+
             let interaction = await ai.interactions.create({
                 model: 'gemini-3.8-flash',
                 input: message,
                 previous_interaction_id: previousInteractionId,
                 tools: toolDefinitions as any,
-            });
+                system_instruction: systemInstruction,
+            })
 
             // Step 2: loop while the model keeps requesting tool calls
             let toolCallStep: any = interaction.steps.find((s: any) => s.type === 'function_call');
@@ -68,6 +78,7 @@ export function createMessagesRouter(ai: GoogleGenAI) {
                     ],
                     tools: toolDefinitions as any,
                     previous_interaction_id: interaction.id,
+                    system_instruction: systemInstruction
                 });
 
                 toolCallStep = interaction.steps.find((s: any) => s.type === 'function_call');

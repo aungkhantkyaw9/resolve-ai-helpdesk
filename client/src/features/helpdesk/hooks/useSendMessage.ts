@@ -46,6 +46,17 @@ export function useSendMessage(initialMessages: Message[]) {
                             done: true,
                         },
                     ]);
+                } else if (data.type === 'policy_retrieved') {
+                    setTraceSteps((prev) => [
+                        ...prev,
+                        {
+                            id: nextTraceId++,
+                            icon: '📋',
+                            label: `${prev.length + 1} · Retrieved policy`,
+                            content: `doc: ${data.doc}`,
+                            done: true,
+                        },
+                    ]);
                 } else if (data.type === 'tool_result') {
                     setTraceSteps((prev) => [
                         ...prev,

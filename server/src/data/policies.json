@@ -1,0 +1,20 @@
+[
+  {
+    "id": "shipping-and-delivery",
+    "title": "shipping-and-delivery.md",
+    "keywords": ["shipping", "delivery", "order", "tracking", "arrive", "late", "shipped", "eta", "package"],
+    "content": "Shipping & Delivery Policy:\n- Standard delivery takes 3-5 business days from ship date.\n- If a package has not arrived within 7 days of the ETA, the customer is eligible for a replacement or refund.\n- Always provide the tracking number when discussing order status.\n- For orders marked 'out_for_delivery', reassure the customer it is expected within 24 hours."
+  },
+  {
+    "id": "refund-policy",
+    "title": "refund-policy.md",
+    "keywords": ["refund", "return", "money back", "damaged", "wrong item", "cancel"],
+    "content": "Refund Policy:\n- Refunds are approved for orders that are damaged, defective, or significantly not as described.\n- Refunds must be requested within 14 days of the delivery date.\n- Always ask for the order ID and a brief reason before issuing a refund.\n- Do not issue a refund for orders still in transit — advise the customer to wait for delivery first."
+  },
+  {
+    "id": "size-exchange",
+    "title": "size-exchange.md",
+    "keywords": ["size", "exchange", "fit", "too small", "too big", "stock", "inventory"],
+    "content": "Size & Exchange Policy:\n- Customers may exchange an item for a different size within 30 days, subject to stock availability.\n- Always check inventory before confirming an exchange is possible.\n- If the requested size is out of stock, offer to notify the customer when it's back, or suggest a refund instead."
+  }
+]
