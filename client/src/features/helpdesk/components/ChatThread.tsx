@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
-import styles from './ChatThread.module.css';
-import type { Message } from '../../../shared/types/message';
-import { formatText } from '../../../shared/utils/formatText';
+import {useEffect, useRef, useState} from 'react'
+import styles from './ChatThread.module.css'
+import type {Message} from '../../../shared/types/message'
+import {formatText} from '../../../shared/utils/formatText'
 
 interface ChatThreadProps {
     messages: Message[];
@@ -10,46 +10,52 @@ interface ChatThreadProps {
     onSend: (text: string) => void;
 }
 
-export function ChatThread({ messages, sending, error, onSend }: ChatThreadProps) {
-    const [input, setInput] = useState('');
+export function ChatThread({messages, sending, error, onSend}: ChatThreadProps) {
+    const [input, setInput] = useState('')
 
-    const messagesEndRef = useRef<HTMLDivElement>(null);
+    const messagesEndRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, [messages]);
+        messagesEndRef.current?.scrollIntoView({behavior: 'smooth'})
+    }, [messages])
 
     function handleSend() {
-        onSend(input);
-        setInput('');
+        onSend(input)
+        setInput('')
     }
+
+    const statusLabel = error
+        ? 'Agent unavailable'
+        : sending
+            ? 'Agent is typing…'
+            : 'Resolved by agent';
 
     return (
         <div className={styles.pane}>
             <div className={styles.head}>
                 <div>
                     <div className={styles.name}>Ploy S.</div>
-                    <div className={styles.sub}>WhatsApp · Order #TH-88213</div>
+                    <div className={styles.sub}>WhatsApp</div>
                 </div>
-                <div className={styles.status}>{sending ? 'Agent is typing…' : 'Resolved by agent'}</div>
+                <div className={styles.status}>{statusLabel}</div>
             </div>
 
             <div className={styles.messages}>
                 {messages.map((m) => (
                     <div key={m.id} className={`${styles.msg} ${styles[m.from]}`}>
                         {m.from === 'agent' && <div className={styles.tag}>AI Agent</div>}
-                        <div className={styles.bubble}>{m.text ? formatText(m.text) : <TypingDots />}</div>
+                        <div className={styles.bubble}>{m.text ? formatText(m.text) : <TypingDots/>}</div>
                         <div className={styles.meta}>{m.time}</div>
                     </div>
                 ))}
                 {error && <div className={styles.error}>{error}</div>}
-                <div ref={messagesEndRef} />
+                <div ref={messagesEndRef}/>
             </div>
 
             <div className={styles.composer}>
                 <input
-                    type="text"
-                    placeholder="Type a message…"
+                    type='text'
+                    placeholder='Type a message…'
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleSend()}
@@ -60,13 +66,13 @@ export function ChatThread({ messages, sending, error, onSend }: ChatThreadProps
                 </button>
             </div>
         </div>
-    );
+    )
 }
 
 function TypingDots() {
     return (
         <span className={styles.typing}>
-      <span /><span /><span />
+      <span/><span/><span/>
     </span>
-    );
+    )
 }
