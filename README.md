@@ -127,6 +127,34 @@ npm test     # run inside client/ or server/ (Vitest)
 
 ---
 
+## Configuration
+
+The server reads its settings from `server/.env`. Copy `server/.env.example` to `server/.env` and fill in the values:
+
+```bash
+GEMINI_API_KEY=your_key_here
+PORT=3001
+```
+
+| Variable | Required | Description |
+|---|---|---|
+| `GEMINI_API_KEY` | Yes | Your Gemini API key. Create a free one in [Google AI Studio](https://aistudio.google.com/). The agent cannot answer without it |
+| `PORT` | No | Port the API server listens on. Defaults to `3001` |
+
+The client reads the API address from `client/.env`. This file is optional locally, because the client falls back to `http://localhost:3001`. Copy `client/.env.example` to `client/.env` only if you change the server port or point the client at a deployed server:
+
+```bash
+VITE_API_URL=http://localhost:3001
+```
+
+| Variable | Required | Description |
+|---|---|---|
+| `VITE_API_URL` | No | Base URL of the API server, without a trailing slash. Defaults to `http://localhost:3001`. Vite reads it at build or start time, so restart the dev server after changing it |
+
+Never commit your real `.env` files. They are listed in `.gitignore`, and only the `.env.example` files are committed.
+
+---
+
 ## API
 
 `POST /api/messages` streams the agent's work as Server-Sent Events:

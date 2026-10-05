@@ -11,7 +11,7 @@ export interface StreamCallbacks {
     onError: (message: string) => void;
 }
 
-const API_URL = 'http://localhost:3001'; // TODO: move to env var when we deploy (KAN-10)
+const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3001';
 
 export async function sendMessage(
     message: string,
