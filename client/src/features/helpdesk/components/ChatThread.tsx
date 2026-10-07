@@ -55,6 +55,8 @@ export function ChatThread({messages, sending, error, onSend}: ChatThreadProps) 
             <div className={styles.composer}>
                 <input
                     type='text'
+                    name="message"
+                    aria-label="Type a message"
                     placeholder='Type a message…'
                     value={input}
                     onChange={(e) => setInput(e.target.value)}

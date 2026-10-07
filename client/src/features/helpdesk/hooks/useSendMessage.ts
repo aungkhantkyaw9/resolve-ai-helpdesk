@@ -34,8 +34,8 @@ export function useSendMessage(initialMessages: Message[]) {
                 );
             },
             onTrace: (data) => {
-                anyToolUsed = true;
                 if (data.type === 'tool_call') {
+                    anyToolUsed = true;
                     setTraceSteps((prev) => [
                         ...prev,
                         {
@@ -86,6 +86,7 @@ export function useSendMessage(initialMessages: Message[]) {
                 setSending(false);
             },
             onError: (message) => {
+                setMessages((prev) => prev.filter((m) => !(m.id === agentMsgId && m.text === '')));
                 setError(message);
                 setSending(false);
             },

@@ -2,7 +2,7 @@
   {
     "id": "shipping-and-delivery",
     "title": "shipping-and-delivery.md",
-    "keywords": ["shipping", "delivery", "order", "tracking", "arrive", "late", "shipped", "eta", "package"],
+    "keywords": ["shipping", "delivery", "tracking", "arrive", "late", "shipped", "eta", "package", "where is my order", "where's my order", "order status"],
     "content": "Shipping & Delivery Policy:\n- Standard delivery takes 3-5 business days from ship date.\n- If a package has not arrived within 7 days of the ETA, the customer is eligible for a replacement or refund.\n- Always provide the tracking number when discussing order status.\n- For orders marked 'out_for_delivery', reassure the customer it is expected within 24 hours."
   },
   {

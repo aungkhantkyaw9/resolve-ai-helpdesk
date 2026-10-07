@@ -67,7 +67,6 @@ A few details worth knowing:
 | No global store | Redux / Zustand | Nothing needs cross-component sharing at this scale. State is lifted to `App.tsx` |
 | Zod | Trusting raw output | Runtime validation, since LLM output is unreliable |
 | CSS Modules | Tailwind | Matched the existing mockup CSS |
-| Vitest | Jest | Vite-native, no extra config |
 | Plain ESLint | Oxlint | The project is too small to benefit from the switch |
 
 ---
@@ -118,12 +117,6 @@ npm run dev
 ```
 
 Open the local URL that Vite prints in the terminal.
-
-**Tests**
-
-```bash
-npm test     # run inside client/ or server/ (Vitest)
-```
 
 ---
 
@@ -192,6 +185,8 @@ I tested the agent against edge cases rather than only the happy path.
 - **Retrieval is keyword-overlap scoring**, not embeddings. It is enough for a handful of policies but would not scale to a large knowledge base.
 - **Streaming is partly simulated.** The function-calling steps use non-streaming calls, so the final answer is generated in full and then chunked on the server to give a streaming feel.
 - **Mock data and no persistence.** Orders, inventory and policies are JSON files, and there is no auth or database.
+- **Fixed mock dates.** The agent is told today's date on every request, but the dates in the mock orders never change. Its answers about ETAs and policy windows (for example, an order that is "overdue") therefore drift as real time passes.
+- **The model can add detail beyond the policy.** In one test it offered a "free replacement or full refund" when the policy only says "a replacement or refund". Policy lines can also conflict: for an `out_for_delivery` order that is already past its ETA, the rule to reassure the customer about 24-hour delivery competes with the late-order rule. A stricter prompt and a rewritten policy would fix both.
 - **Free-tier rate limits.** The Gemini free tier can return rate-limit errors under heavy testing.
 - **Model output is not deterministic.** The same input can produce differently worded answers.
 
@@ -202,7 +197,7 @@ I tested the agent against edge cases rather than only the happy path.
 - Deployment (frontend and backend).
 - Embedding-based retrieval to replace keyword scoring.
 - Human handoff when the agent is unsure or a refund is above a threshold.
-- Basic evaluation set for tool-call correctness.
+- Automated tests: unit tests for policy retrieval and the tools, plus a small evaluation set for tool-call correctness.
 
 ---
 

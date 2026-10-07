@@ -24,6 +24,11 @@ export async function sendMessage(
         body: JSON.stringify({ message, previousInteractionId }),
     });
 
+    if (response.status === 429) {
+        callbacks.onError('The demo has reached its usage limit. Please try again in a little while.');
+        return;
+    }
+
     if (!response.ok || !response.body) {
         callbacks.onError('Failed to connect to the server');
         return;

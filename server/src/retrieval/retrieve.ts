@@ -7,7 +7,7 @@ export interface RetrievedPolicy {
 }
 
 export function retrievePolicy(message: string): RetrievedPolicy | null {
-    const lower = message.toLowerCase();
+    const lower = message.toLowerCase().replace(/[\u2018\u2019]/g, "'");
 
     let best: { policy: (typeof policies)[number]; score: number } | null = null;
 

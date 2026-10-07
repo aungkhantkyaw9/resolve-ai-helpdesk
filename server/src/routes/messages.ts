@@ -32,9 +32,10 @@ export function createMessagesRouter(ai: GoogleGenAI) {
 
         try {
             const policy = retrievePolicy(message);
+            const today = `Today's date is ${new Date().toISOString().slice(0, 10)}.`;
             const systemInstruction = policy
-                ? `You are a merchant support agent. Follow this policy document when relevant:\n\n${policy.content}`
-                : 'You are a helpful merchant support agent.';
+                ? `You are a merchant support agent. ${today} Follow this policy document when relevant:\n\n${policy.content}`
+                : `You are a helpful merchant support agent. ${today}`;
 
             if (policy) {
                 send('trace', { type: 'policy_retrieved', doc: policy.title });
@@ -97,8 +98,26 @@ export function createMessagesRouter(ai: GoogleGenAI) {
             send('done', { interactionId: interaction.id });
             res.end();
         } catch (error) {
-            console.error('[messages] Streaming failed:', error);
-            send('error', { message: 'Something went wrong generating a response' });
+            const err = error as {
+                status?: number;
+                statusCode?: number;
+                message?: string;
+                cause?: { code?: string; message?: string };
+            };
+            const status = err.status ?? err.statusCode;
+
+            console.error('[messages] Streaming failed:', {
+                status,
+                message: err.message?.slice(0, 300),
+                cause: err.cause?.code ?? err.cause?.message,
+            });
+
+            const limitReached = status === 402 || status === 429;
+            send('error', {
+                message: limitReached
+                    ? 'The demo has reached its usage limit. Please try again later.'
+                    : 'Something went wrong generating a response',
+            });
             res.end();
         }
     });

@@ -5,9 +5,9 @@ server/node_modules/
 
 # env files
 .env
-.env.local
+.env.*
+!.env.example
 client/.env
-client/.env.local
 server/.env
 
 # build output

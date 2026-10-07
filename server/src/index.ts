@@ -13,9 +13,10 @@ if (!apiKey) throw new Error('GEMINI_API_KEY is missing — check server/.env');
 
 const ai = new GoogleGenAI({ apiKey });
 
-app.use(cors());
+app.set('trust proxy', 1);
+app.use(cors({ origin: process.env.CORS_ORIGIN || 'http://localhost:5173' }));
 app.use(express.json());
-app.use(rateLimit({ windowMs: 15 * 60 * 1000, limit: 50 }));
+app.use('/api/messages', rateLimit({ windowMs: 15 * 60 * 1000, limit: 50 }));
 
 app.get('/health', (_req, res) => res.json({ status: 'ok' }));
 app.use('/api', createMessagesRouter(ai));
